@@ -167,7 +167,7 @@ if ($dcselected -and $clusterselected) {
 }
 if ($vc) {
 	$form.Text = "$vc"
-	$label.Text = "Disconnect From $vc?"
+	$label.Text = "Disconnect From $vc"
 	$OKButton.Text = 'Yes'
 	$CancelButton.Text = 'No'
 
