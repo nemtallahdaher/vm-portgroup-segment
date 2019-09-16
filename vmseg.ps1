@@ -14,10 +14,21 @@ $clusterfile = '~\Documents\clusters.txt'
 $clustersdone = get-content $clusterfile -ErrorAction Ignore
 
 
-
 #Connect to VC
-$viServer = Read-Host -Prompt 'Input your VC server  name'
-connect-viserver -server $viServer
+$viServer = Read-Host -Prompt 'What is your vCenter server name: '
+$serverlist = $global:DefaultVIServer
+if($serverlist) {
+	foreach ($server in $serverlist) {
+		if($server.Name -eq $viServer){
+			$vc=$server
+			write-Host "You are connected to $viServer, Hooray!"
+			break
+		}
+	}
+}
+if ($vc -eq $null) {
+	$vc=connect-viserver -server $viServer
+}
 
 #Connect to NSX
 #$nsxServer = Read-Host -Prompt 'Input your NSX server  name'
@@ -100,6 +111,15 @@ if ($result -eq [System.Windows.Forms.DialogResult]::OK)
 
 
 if ($dcselected -and $clusterselected) {
+	
+	#Do this for real or Whatif
+	$form.Text = "What If?"
+	$label.Text = "Is This for Real?"
+	$OKButton.Text = 'Do It'
+	$CancelButton.Text = 'What If'
+	$listBox.Size = New-Object System.Drawing.Size(0,0)
+	$result = $form.ShowDialog()
+
 
 	#Get VMs
 	$sortedvms = get-datacenter -name $dcselected | get-cluster -name $clusterselected | get-vm | sort-object 
@@ -115,7 +135,13 @@ if ($dcselected -and $clusterselected) {
 					$mynetadapter = $vm | get-networkadapter -name $netname -ErrorAction Ignore
 					if ($mynetadapter.networkname -eq $_.PortGroup) {
 						write-host -nonewline "Change " $vm.name ": "
-						set-networkadapter -NetworkAdapter $myNetAdapter -NetworkName $_.Segment -whatif -confirm:$false
+						$doit=0
+						if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+							$doit=1
+							set-networkadapter -NetworkAdapter $myNetAdapter -NetworkName $_.Segment -confirm:$false
+						} else {
+							set-networkadapter -NetworkAdapter $myNetAdapter -NetworkName $_.Segment -whatif -confirm:$false
+						}
 					}
 				}
 				catch {
@@ -126,15 +152,28 @@ if ($dcselected -and $clusterselected) {
 
 
 	#Remeber which clusters are done
-	$dccluster = $dcselected + ":" + $clusterselected
-	$form.Text = "$clusterselected"
-	$label.Text = "Did cluster $clusterselected Complete?"
+	if ($doit) {
+		$dccluster = $dcselected + ":" + $clusterselected
+		$form.Text = "$clusterselected"
+		$label.Text = "Did cluster $clusterselected Complete?"
+		$OKButton.Text = 'Yes'
+		$CancelButton.Text = 'No'
+
+		$result = $form.ShowDialog()
+		if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+			Add-Content $clusterfile $dccluster
+		}
+	}
+}
+if ($vc) {
+	$form.Text = "$vc"
+	$label.Text = "Disconnect From $vc?"
 	$OKButton.Text = 'Yes'
 	$CancelButton.Text = 'No'
-	$listBox.Size = New-Object System.Drawing.Size(0,0)
 
 	$result = $form.ShowDialog()
 	if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-		Add-Content $clusterfile $dccluster
+		disconnect-viserver -server $vc -confirm:$false
 	}
+
 }
