@@ -1,10 +1,10 @@
 # vm-portgroup-segment
-Change VM port assignment from/to portgroup to segment
+Change VM port assignment from/to portgroup to segment.
 
-This is done by DataCenter/Cluster
+This is done by DataCenter/Cluster.
 
 
-Create a CSV with PortGroup,Segment called segment.csv in your Documents directory
+Create a CSV with PortGroup,Segment called segment.csv in your Documents directory.
 The CSV should look like the following.  The header line is necessary:
 
 
