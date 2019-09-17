@@ -8,11 +8,11 @@ Create a CSV with PortGroup,Segment called segment.csv in your Documents directo
 The CSV should look like the following.  The header line is necessary:
 
 
-PortGroup,Segment
+	PortGroup,Segment
 
-V-61,segment-vlan-61
+	V-61,segment-vlan-61
 
-MGT-NATIVE-VLAN,seg-vlan-0
+	MGT-NATIVE-VLAN,seg-vlan-0
 
 
 
