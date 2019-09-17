@@ -9,7 +9,9 @@ The CSV should look like the following.  The header line is necessary:
 
 
 PortGroup,Segment
+
 V-61,segment-vlan-61
+
 MGT-NATIVE-VLAN,seg-vlan-0
 
 
