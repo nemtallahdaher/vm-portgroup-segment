@@ -18,7 +18,7 @@ The CSV should look like the following.  The header line is necessary:
 
 A file called cluster.txt is created in your Documents directory and it will keep track of completed clusters.  You can edit this file if you would like to act on a cluster again.
 
-there are 2 script files:
+there are 2 script files that will do the same thing but work differently:
 
 vmseg.ps1 works on each VM and each interface at one time. This is a little slow and inefficient.
 
