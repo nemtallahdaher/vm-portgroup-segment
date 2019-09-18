@@ -21,7 +21,7 @@ if($serverlist) {
 	foreach ($server in $serverlist) {
 		if($server.Name -eq $viServer){
 			$vc=$server
-			write-Host "You are connected to $viServer, Hooray!"
+			write-Host -BackgroundColor blue "You are connected to $viServer, Hooray!"
 			break
 		}
 	}
@@ -123,12 +123,19 @@ if ($dcselected -and $clusterselected) {
 
 	#Get VMs
 	$sortedvms = get-datacenter -name $dcselected | get-cluster -name $clusterselected | get-vm | sort-object 
+	write-Host -BackgroundColor blue "Working on the following VMs:"
+	$sortedvms | % {
+		write-host $_.name -nonewline 
+		$strsep = "-"*(50-$_.name.length)
+		write-host $strsep  -nonewline
+		write-host $_.vmhost.name
+	}
 
 	#Set Network Adapters
 	import-csv $csvfile | % {
 		write-host ""
 		$thisportgroup=$_.PortGroup
-		Write-Host "Working on PortGroup: " $thisportgroup
+		Write-Host -BackgroundColor blue "Working on PortGroup: " $thisportgroup
 		$mynetadapters = $sortedvms | get-networkadapter | where {$_.networkname -eq $thisportgroup}
 		$doit=0
 		if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
