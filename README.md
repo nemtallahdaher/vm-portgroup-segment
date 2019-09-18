@@ -24,4 +24,4 @@ vmseg.ps1 works on each VM and each interface at one time. This is a little slow
 
 vmseg-2.ps1 works on all interfaces that match a certain portgroup from the CSV file.  This much faster and more efficent.
 
-vmseg-3.ps1 works works per host rather than per cluster.  A file called host.txt is created in your Documents directory and it will keep track of completed hosts.
+vmseg-3.ps1 works per host rather than per cluster.  A file called host.txt is created in your Documents directory and it will keep track of completed hosts.
