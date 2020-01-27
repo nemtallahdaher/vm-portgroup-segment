@@ -22,6 +22,8 @@ there are 2 script files that will do the same thing but work differently:
 
 vmseg.ps1 works on each VM and each interface at one time. This is a little slow and inefficient.
 
-vmseg-2.ps1 works on all interfaces that match a certain portgroup from the CSV file.  This much faster and more efficent.
+vmseg-2.ps1 works on all interfaces that match a certain portgroup from the CSV file.  This is a bit more efficent.
 
 vmseg-3.ps1 works per host rather than per cluster.  A file called host.txt is created in your Documents directory and it will keep track of completed hosts.
+
+vmseg-4.ps1 similar to vmseg-2, works on all interfaces that match a certain portgroup from the CSV file.  This is much faster and more efficent than vmseg-2.
